@@ -5,6 +5,7 @@ import Parse from 'parse/dist/parse.min.js';
 import Cabecalho from '../components/cabecalho'
 import Grupo from '../components/grupo'
 import Conta from '../components/conta'
+import Link from 'next/link';
 
 const Edit = () => {
   const router = useRouter();
@@ -29,6 +30,30 @@ const Edit = () => {
 
     }
   }, [id]);
+
+  async function Salvar() {
+
+
+    let fc = new Parse.Object('FluxoCaixa');
+
+    fc.set('objectId', id);
+    // Set new done value and save Parse Object changes
+    fc.set('contas', contas);
+
+    try {
+      await fc.save();
+      // Success
+      alert('Fluxo de Caixa salvo com sucesso!');
+      // Refresh to-dos list
+
+    } catch (error) {
+      // Error can be caused by lack of Internet connection
+      alert(`Error! ${error.message}`);
+
+    };
+
+
+  }
 
   function convertNumberToUsFormat(valor) {
     return Number.parseFloat(valor.replaceAll(".", "").replace(",", "."));
@@ -58,13 +83,13 @@ const Edit = () => {
   function handleOnChange(evt) {
 
     const id = evt.target.id;
-    
+
     const valorCampo = evt.target.value;
 
     const valor = convertNumberToUsFormat(valorCampo);
 
     updValue(contas, id, valor);
-    
+
     recalcularFC(contas);
 
   }
@@ -156,32 +181,39 @@ const Edit = () => {
     )
   }
   return (
-    <div className='container'>
+    <div className="bg-gray-100 h-screen">
 
       <Cabecalho />
 
-      <div className='corpo'>
+      <div className="container mx-auto p-4">
+
+
+        <h1 className="text-2xl font-semibold mb-4 inline">Alteração</h1>
+        <Link className="text-blue-500 hover:underline ml-2 inline" href='/'>Voltar para o início</Link>
 
 
         <div>
-
-    <div className="grid grid-cols-2 gap-4">
-
-
-        <div className="w-1/2">
-          <div className="text-lg font-semibold text-left">
-			    Conta
-          </div>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={Salvar}>Salvar</button>
         </div>
-        <div className="w-1/2">
-          <div className="text-gray-600 text-right" >
-				  {data}
+
+        <div className="grid grid-cols-2 gap-4">
+
+
+          <div className="w-1/2">
+            <div className="text-lg font-semibold text-left">
+              Conta
+            </div>
           </div>
+          <div className="w-1/2">
+            <div className="text-gray-600 text-right" >
+              {data}
+            </div>
+          </div>
+
+
         </div>
-      
 
-    </div>          
-
+        <div>
 
           {
             contas == null ? "" : f(contas, 0)
