@@ -48,7 +48,7 @@ const Home: NextPage = () => {
 
     } catch (error) {
 
-      alert(`Erro ${error.message}`);
+      alert('Erro ao excluir fluxo de caixa');
       return false;
     };
 

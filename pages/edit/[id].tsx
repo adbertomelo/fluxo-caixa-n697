@@ -47,8 +47,8 @@ const Edit = () => {
       // Refresh to-dos list
 
     } catch (error) {
-      // Error can be caused by lack of Internet connection
-      alert(`Error! ${error.message}`);
+
+      alert('Erro ao salvar fluxo de caixa');
 
     };
 
